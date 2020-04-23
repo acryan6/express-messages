@@ -33,10 +33,11 @@ app.get('/api/messages', (req, res) => {
   Message.find().then(messages => res.send(messages));
 });
 
-app.put('/api/messages/:id', (req, res) => {
+app.put('/api/messages/:id', async (req, res) => {
 
-  let newMessage = new Message(req.body);
-  Message.findByIdAndUpdate(Number(req.params.id), newMessage).then((res) => res.end());
+  // let newMessage = new Message(req.body);
+  await Message.updateOne({ id: req.params.id }, req.body);
+  res.end();
 });
 
 app.delete('/api/messages/:id', (req, res) => {
@@ -48,6 +49,7 @@ app.delete('/api/messages/:id', (req, res) => {
 });
 
 app.get('/api/messages/:id', (req, res) => {
+
   Message.findOne({ id: req.params.id }, (err) => {
     if (err) {
       return console.log(err);
